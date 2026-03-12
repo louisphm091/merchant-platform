@@ -32,7 +32,7 @@ func (s *MerchantService) Register(input RegisterMerchantInput) (*model.Merchant
 
 	existingMerchant, _ := s.merchantRepo.FindByEmail(input.Email)
 	if existingMerchant != nil {
-		return nil, fmt.Errorf("Merchant with this email already exists")
+		return nil, fmt.Errorf("merchant with this email already exists")
 	}
 
 	merchant := &model.Merchant{
@@ -54,6 +54,49 @@ func (s *MerchantService) Register(input RegisterMerchantInput) (*model.Merchant
 
 func (s *MerchantService) List() ([]model.Merchant, error) {
 	return s.merchantRepo.FindAll()
+}
+
+func (s *MerchantService) ApproveMerchant(id string) (*model.Merchant, error) {
+
+	merchant, err := s.merchantRepo.FindById(id)
+
+	if err != nil {
+		return nil, fmt.Errorf("merchant with this id does not exists")
+	}
+
+	if merchant.Status == model.MerchantStatusApproved {
+		return nil, fmt.Errorf("merchant is already approved")
+	}
+
+	if merchant.Status == model.MerchantStatusSuspended {
+		return nil, fmt.Errorf("merchant is already suspended")
+	}
+
+	merchant.Status = model.MerchantStatusApproved
+
+	if err := s.merchantRepo.Update(merchant); err != nil {
+		return nil, err
+	}
+	return merchant, nil
+}
+func (s *MerchantService) RejectMerchant(id string) (*model.Merchant, error) {
+
+	merchant, err := s.merchantRepo.FindById(id)
+
+	if err != nil {
+		return nil, fmt.Errorf("merchant with this id does not exists")
+	}
+
+	if merchant.Status == model.MerchantStatusApproved {
+		return nil, fmt.Errorf("approved merchant can not be rejected directly")
+	}
+
+	merchant.Status = model.MerchantStatusRejected
+
+	if err := s.merchantRepo.Update(merchant); err != nil {
+		return nil, err
+	}
+	return merchant, nil
 }
 
 func generateMerchantCode() string {

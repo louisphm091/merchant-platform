@@ -19,6 +19,31 @@ func NewMerchantHandler(merchantService *service.MerchantService) *MerchantHandl
 	}
 }
 
+func (h *MerchantHandler) Approve(c *gin.Context) {
+
+	id := c.Param("id")
+	merchant, err := h.merchantService.ApproveMerchant(id)
+
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "Failed to approve merchant", err.Error())
+		return
+	}
+
+	response.Success(c, http.StatusOK, "Merchants approved successfully", merchant)
+}
+
+func (h *MerchantHandler) Reject(c *gin.Context) {
+	id := c.Param("id")
+	merchant, err := h.merchantService.RejectMerchant(id)
+
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "Failed to reject merchant", err.Error())
+		return
+	}
+
+	response.Success(c, http.StatusOK, "Merchants rejected successfully", merchant)
+}
+
 func (h *MerchantHandler) Register(c *gin.Context) {
 
 	var req service.RegisterMerchantInput

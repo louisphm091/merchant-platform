@@ -10,6 +10,7 @@ import (
 func AutoMigrate(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&model.Merchant{},
+		&model.Admin{},
 	)
 
 	if err != nil {

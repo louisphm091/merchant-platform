@@ -14,6 +14,7 @@ func main() {
 
 	db := database.NewPostgresConnection(cfg)
 	database.AutoMigrate(db)
+	database.SeedAdmins(db)
 
 	rdb := cache.NewRedisConnection(cfg)
 
