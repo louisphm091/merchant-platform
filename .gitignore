@@ -1,4 +1,4 @@
-.env
+services/merchant-service/.env
 tmp/
 bin/
 dist/

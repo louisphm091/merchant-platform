@@ -1,0 +1,9 @@
+package constant
+
+const (
+	SUCCESS_CODE     = "0000"
+	INVALID_INPUT    = "0310"
+	DUPLICATE_ERROR  = "9400"
+	RECORD_NOT_FOUND = "1407"
+	INVALID_REQUEST  = "0300"
+)
