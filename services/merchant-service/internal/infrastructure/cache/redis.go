@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"merchant-platform/merchant-service/internal/infrastructure/config"
 	"strconv"
 
-	"github.com/louisphm091/merchant-platform/internal/infrastructure/config"
 	"github.com/redis/go-redis/v9"
 )
 
